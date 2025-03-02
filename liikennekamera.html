@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+<section>
+<!--Navigaatiopallkki-->
+
+    <div class="topnav">
+        <a href="#home">Kursi</a>
+        <a href="#sivu2">Toteutus</a>
+        <a href="#sivu3">Tapahtumat</a>
+        <a href="#sivu4">Sää</a>
+        <a  class="active" href="#sivu3">Liikennekamera</a>
+        <a href="#sivu4">Junat</a>
+</div>
+
+</section>
+
+<section>
+
+    <div id="vastaus"></div>
+
+    <div id="kuva"></div>
+    
+    
+
+<script>
+
+    //Funktio, joka hakee liikennekameroiden tiedot.
+
+    function kamerat(data) {
+
+    
+        var teksti = ""; 
+
+        teksti = "<h1>Autolla Tampereelle</h1>";
+
+        teksti += "<p>Minkälainen sää siellä on?</p>";
+
+        var teksti2 ="";
+
+    
+        for (var i = 0; i < data.presets; i++) {
+
+        teksti2 += "<h3>" + data.presets[i].id + "</h3>";
+
+        teksti2 += "<p>" + data.presets[i].measuredTime + "</p>";
+
+        }
+
+    
+        document.getElementById("vastaus").innerHTML = teksti + teksti2;
+        } 
+
+    
+    
+//Tehdään fetch liikennekameroiden titetoja varten. 
+    
+    
+fetch('https://tie.digitraffic.fi/api/weathercam/v1/stations/C04507/data')
+
+
+.then(function (response) { return response.json();
+    
+})
+
+
+.then(function (responseJson) {
+    kamerat(responseJson)
+})
+
+
+.catch(function (error) { document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan </p>"+ error;
+
+});
+
+</script>
+
+</section>
+
+<section>
+
+<script>
+
+//Funktio, joka hakee kameroiden kuvat.
+
+function kamerat2(data) {
+
+var image = "";
+
+for (var i = 0; i < data.presets.length; i++) {
+
+    image += "<p><img src='https://weathercam.digitraffic.fi/" + data.presets[i].imageUrl + ".jpg' alt='Kelikameran kuva'></p>";
+}
+document.getElementById("kuva").innerHTML = image;
+
+}
+
+//Tehdään toinen Fetch kameroiden kuville
+
+
+fetch('https://tie.digitraffic.fi/api/weathercam/v1/stations/C04507')
+
+
+.then(function (response) { return response.json();
+    
+})
+
+
+.then(function (responseJson) {
+    kamerat(responseJson)
+})
+
+
+.catch(function (error) { document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan </p>"+ error;
+
+});
+
+
+</script>
+
+</section>
+
+</body>
+</html>

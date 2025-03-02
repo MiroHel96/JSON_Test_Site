@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<!--Navigaatiopalkki-->
+
+<section>
+
+    <div class="topnav">
+        <a class="active" href="#home">Kursi</a>
+        <a href="#sivu2">Toteutus</a>
+        <a href="#sivu3">Tapahtumat</a>
+        <a  class="active"  href="sivu4">Sää</a>
+        <a href="#sivu5">Liikennekamera</a>
+        <a href="#sivu6">Junat</a>
+    </div>
+
+    <div  id="saaContainer" class="flex-container">
+        <div id="Helsinki"></div>
+        <div id="Tampere"></div>
+    </div>
+</section>
+
+<script>
+
+    //Funktio hakee Helsingin säätiedot 
+
+    function saa(data) {
+
+
+        // Helsinging säätiedot
+
+        var teksti2 = "";
+
+            teksti2 += "<p>" + data.name + "</p>";
+            teksti2 += "<p> Sää: " + data.weather[0].description + "</p>";
+            teksti2 += "<p> Lämpötila: " + data.main.temp + " °C</p>";
+            teksti2 += "<p> Tuulen nopeus: " + data.wind.speed + " m/s </p>";
+            teksti2 += "<p><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + ".png' alt='Sää kuvake'></p>";
+
+
+        document.getElementById("Helsinki").innerHTML = teksti2;
+
+    }
+    
+// Fetch Helsingin säätietoja varten
+    
+fetch('https://api.openweathermap.org/data/2.5/weather?lat=60.19&lon=24.94&appid=665ecd56dfc08dbb50feb8b8f5034e28&units=metric')
+
+
+// Muunnetaan vastaus JSON muotoon
+
+.then(function (response) { return response.json();
+    
+})
+
+// Käsitellään muunnettu (eli JSON muotoinen) vastaus
+
+.then(function (responseJson) {
+    saa(responseJson);
+    
+})
+
+
+// Kutsutaan funktiota ja välitetään sille json-vastaus tapahtumat(responseJson)})
+
+
+// Jos tuli jokin virhe
+
+.catch(function (error) { document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan </p>"+ error;
+
+});
+
+</script>
+
+<script>
+
+//Funktio hakee Tampereen säätiedot
+
+function saa2(data) {
+
+var teksti3 ="";
+
+            teksti3 += "<p>" + data.name + "</p>";
+            teksti3 += "<p> Sää: " + data.weather[0].description + "</p>";
+            teksti3 += "<p> Lämpötila: " + data.main.temp + " °C</p>";
+            teksti3 += "<p> Tuulen nopeus: " + data.wind.speed + " m/s </p>";
+            teksti3 += "<p><img src='http://openweathermap.org/img/wn/" + data.weather[0].icon + ".png' alt='Sää kuvake'></p>";
+
+        document.getElementById("Tampere").innerHTML = teksti3;
+
+}
+// Fetch Tampereen säätietoja varten 
+
+fetch('https://api.openweathermap.org/data/2.5/weather?lat=61.49911&lon=23.78712&appid=665ecd56dfc08dbb50feb8b8f5034e28&units=metric')
+
+
+.then(function (response) { return response.json();
+    
+})
+
+
+.then(function (responseJson) {
+    saa2(responseJson);
+    
+})
+
+
+.catch(function (error) { document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan </p>"+ error;
+
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapahtumat</title>
+</head>
+<body>
+    
+<!--Navigaatiopalkki-->
+<section>
+
+    <div class="topnav">
+        <a href="#home">Kursi</a>
+        <a href="#sivu2">Toteutus</a>
+        <a class="active" href="#sivu3">Tapahtumat</a>
+        <a href="#sivu4">Sää</a>
+        <a href="#sivu5">Liikennekamera</a>
+        <a href="#sivu6">Junat</a>
+    </div>
+
+
+<div class="contentContainer" id="vastaus"></div>
+
+</section>
+
+<section>
+
+<script>
+
+//Funktio, joka hakee Tampereen tapahtumat JSON tiedostosta
+
+function tapahtumat(data) {
+
+var teksti = "";
+
+teksti = "<h1>Tampereella tapahtuu</h1>";
+
+for (var i = 0; i < data.length; i++) {
+
+teksti = teksti + "<h3>" + data[i].title + "</h3>";
+
+teksti = teksti + "<p>" + data[i].description + "</p>";
+
+teksti = teksti + "<p> <a href=" + data[i].url + ">" + data[i].url + "</a></p>";
+
+}
+
+document.getElementById("vastaus").innerHTML = teksti;
+
+}
+
+// Tehdään fetch JSON:nia varten
+
+fetch('https://api.visittampere.com/api/v1/visittampere/event/published/all/?format=json&lang=fi')
+
+
+// Muunnetaan vastaus JSON muotoon
+
+.then(function (response) { return response.json();
+
+})
+
+// Käsitellään muunnettu (eli JSON muotoinen) vastaus
+
+.then(function (responseJson) {
+    tapahtumat(responseJson);
+})
+
+
+// Kutsutaan funktiota ja välitetään sille json-vastaus tapahtumat(responseJson)})
+
+
+// Jos tuli jokin virhe
+
+.catch(function (error) { document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan </p>"+ error;
+
+})
+
+
+</script>
+
+</section>
+</body>
+</html>

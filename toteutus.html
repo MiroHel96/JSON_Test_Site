@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON sivu2</title>
+</head>
+<body>
+   
+<section>
+    <!--Navigaatiopalkki-->
+    <div class="topnav">
+        <a href="#home">Kursi</a>
+        <a  class="active" href="#sivu2">Toteutus</a>
+        <a href="#sivu3">Tapahtumat</a>
+        <a href="#sivu4">Sää</a>
+        <a href="#sivu3">Liikennekamera</a>
+        <a href="#sivu4">Junat</a>
+    </div>
+</section>
+<section>
+
+<div class="contentContainer" id="vastaus"></div>
+
+<div class="image-container">
+    <img id="image" src="" alt="Image">
+</div>
+ 
+</section>
+
+<section>
+
+<script>
+
+//Funktio, joka hakee luomani JSON tiedoston
+    function kerro(data){
+
+        var teksti = "";
+        
+        teksti =  "<h1>Toteutuksen tiedot</h1>" +  "Nimi- " + data.toteutus + "<br>" 
+        + "Osallistujien lukumäärä - " + data.osallistujat + "<br>"; 
+
+        teksti2 = "";
+
+        for(let i = 0; i < data.nimet.length; i++) {
+            teksti2 +=  data.nimet[i] + " ";
+            
+        }
+
+        var teksti3 =" ";
+        teksti3 =  "Toteutuksen kesto - " + data.kesto + "<br>";
+        
+        var kuva = data.kuva;
+
+        document.getElementById("vastaus").innerHTML = teksti + "Osallistujat - " + teksti2  + "<br>"  + teksti3;
+        
+        document.getElementById("image").src = kuva;
+
+        }
+        
+// Tehdään fetch JSON tiedostoa varten   
+        
+fetch('https://raw.githubusercontent.com/MiroHel96/JSON/refs/heads/main/haagaHelia.json') 
+
+
+// Muunnetaan vastaus JSON muotoon  
+
+.then(function (response) {
+
+ return response.json();
+
+})
+
+
+//Käsitellään muunnettu (eli JSON muotoinen) vastaus
+
+// Kutsutaan funktiota kerro()ja välitetään sille json-vastaus
+
+
+.then(function (responseJson) {
+
+kerro(responseJson);
+
+ })
+
+
+ // Jos tuli jokin virhe
+
+
+ .catch(function (error) {
+
+ document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan</p>";
+
+})
+
+
+
+    
+</script>
+<section>
+
+
+</body>
+</html>

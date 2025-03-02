@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JSON Git Testi</title>
+</head>
+
+<!--Navigaatiopalkki-->
+<body>
+
+    <div class="topnav">
+        <a class="active" href="#home">Kursi</a>
+        <a href="#sivu2">Toteutus</a>
+        <a href="#sivu3">Tapahtumat</a>
+        <a href="#sivu4">Sää</a>
+        <a href="#sivu3">Liikennekamera</a>
+        <a href="#sivu4">Junat</a>
+    </div>
+
+<section>
+    <div class="contentContainer" id="vastaus"></div>
+
+    <div class="image-container">
+        <img id="image" src="" alt="Image">
+    </div>
+
+    <div class="contentContainer" id="vastaus2"></div>
+
+</section>
+
+<section>
+
+<script>
+
+// Funktio, joka hakee luomani Json tiedoston
+
+function kerro(data){
+
+var teksti = "<h1>Miron Testi JSON sivu</h1>" + "<h2>" + data.otsikko + "</h2>" + "<h3>" + data.kuvaus + "</h3>"; 
+
+var teksti2 = "Opintojakso: " + data.opintojakso[0].nimi + "<br>" 
++ "Tunnus: " + data.opintojakso[0].tunnus + "<br>" 
++ "Opintopisteet: " + data.opintojakso[0].opintopisteet + "<br>";
+
+//Sisältö
+
+var teksti3 = "";
+
+for(var i = 0; i < data.sisalto.length; i++) {
+    teksti3 += i + " " + data.sisalto[i] + "<br>";
+}
+
+//Tekniikat
+
+var teksti4 = "";
+
+for(var i = 0; i < data.tekniikat.length; i++) {
+    teksti4 += data.tekniikat[i].tyyppi + "<br>" + 
+    "Aihe: " + data.tekniikat[i].aihe + "<br>" + "Linkki: " 
+    + data.tekniikat[i].linkki + "<br>";
+}
+
+//Sivustom kuva
+var kuva = data.kuva;
+
+document.getElementById("vastaus").innerHTML = teksti + "<br>";
+
+document.getElementById("vastaus2").innerHTML = teksti2  + "<br>" + "Sisältö" +  "<br>" + teksti3 + "<br>" + "Tekniinkat" + "<br>" + teksti4;
+
+document.getElementById("image").src = kuva; 
+
+}
+
+//Fetch JSON:ia varten 
+
+fetch('https://raw.githubusercontent.com/MiroHel96/JSON/refs/heads/main/oma.json')
+
+// Muunnetaan vastaus JSON muotoon  
+
+.then(function (response) {
+return response.json();
+
+})
+
+//Käsitellään muunnettu (eli JSON muotoinen) vastaus
+
+// Kutsutaan funktiota kerro()ja välitetään sille json-vastaus
+
+.then(function (responseJson) {
+kerro(responseJson);
+
+})
+
+ // Jos tuli jokin virhe
+
+ .catch(function (error) {
+    document.getElementById("vastaus").innerHTML = "<p>Tietoa ei pystytä hakemaan</p>";
+
+})
+
+
+</script>
+</section>
+
+</body>
+</html>
